@@ -1,0 +1,13 @@
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=www
+Group=www-data
+WorkingDirectory=/c/Users/hemke/Desktop/itmo-test-task/test-task-graphs/src
+ExecStart=/c/Users/hemke/Desktop/itmo-test-task/test-task-graphs/env/bin/gunicorn --workers 3 --bind unix:/c/Users/hemke/Desktop/itmo-test-task/test-task-graphs/gunicorn/gunicorn.sock config.wsgi:application --access-logfile /c/Users/hemke/Desktop/itmo-test-task/test-task-graphs/gunicorn/access.log --error-logfile /c/Users/hemke/Desktop/itmo-test-task/test-task-graphs/gunicorn/error.log
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
