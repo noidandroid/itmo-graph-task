@@ -2,6 +2,7 @@ from collections import defaultdict
 
 from django.db import models
 from django.contrib.postgres.fields import JSONField
+import numpy as np
 
 # Create your models here.
 
@@ -55,9 +56,28 @@ class Node(models.Model):
 
 class Vector(Node):
     """Vector node model"""
-    valueList = JSONField("Vector container")
+
+    def __init__(self, value_list, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._value_list = []
+
+    def get_vect(self):
+        return self._value_list
+
+    def expand(self, num):
+        self._value_list.append(num)
 
 
 class Operation(Node):
     """Operation node model"""
     name = models.CharField("Operation name", max_length=250)
+
+    def sum(self, vect1: Vector, vect2: Vector) -> Vector:
+        return Vector(np.array(vect1.get_vect()) + np.array(vect2.get_vect()))
+
+    def mul(self, vect1: Vector, vect2: Vector) -> Vector:
+        return Vector(np.array(vect1.get_vect()) * np.array(vect2.get_vect()))
+
+    def len(self, vect1: Vector, vect2: Vector):
+        return Vector(np.array([len(vect1.get_vect()), len(vect2.get_vect())]))
+
