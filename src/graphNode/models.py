@@ -1,8 +1,8 @@
 from collections import defaultdict
 
-from django.db import models
-from django.contrib.postgres.fields import JSONField
 import numpy as np
+from django.db import models
+
 
 # Create your models here.
 
@@ -10,7 +10,8 @@ import numpy as np
 class Graph(models.Model):
     """Base graph model"""
 
-    def __init__(self, connections, directed=False):
+    def __init__(self, connections, directed=False, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self._graph = defaultdict(set)
         self._directed = directed
         self.add_connections(connections)
@@ -70,14 +71,8 @@ class Vector(Node):
 
 class Operation(Node):
     """Operation node model"""
-    name = models.CharField("Operation name", max_length=250)
 
-    def sum(self, vect1: Vector, vect2: Vector) -> Vector:
-        return Vector(np.array(vect1.get_vect()) + np.array(vect2.get_vect()))
-
-    def mul(self, vect1: Vector, vect2: Vector) -> Vector:
-        return Vector(np.array(vect1.get_vect()) * np.array(vect2.get_vect()))
-
-    def len(self, vect1: Vector, vect2: Vector):
-        return Vector(np.array([len(vect1.get_vect()), len(vect2.get_vect())]))
+    def __init__(self, name, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.name = models.CharField("Operation name", max_length=250)
 
