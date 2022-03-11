@@ -66,8 +66,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'graph_db',
-        'USER': 'dbms',
-        'PASSWORD': 'db_password',
+        'USER': 'postgres',
+        'PASSWORD': '123654',
         'HOST': 'localhost',
         'PORT': '',
     }
