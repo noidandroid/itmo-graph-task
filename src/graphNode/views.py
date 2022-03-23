@@ -6,6 +6,7 @@ from . import operationService as s
 
 
 # Create your views here.
+from .models import OperationType
 
 
 def create_graph(request):
@@ -52,3 +53,23 @@ def length(request, graph: models.Graph,
     graph.add(vector1, operation)
     graph.add(vector2, operation)
     graph.add(operation, s.len(vector1, vector2))
+
+
+def view(request, vector1: models.Vector,
+         vector2: models.Vector,
+         operation: models.Operation) -> models.Graph:
+    graph = models.Graph()
+
+    if operation.name == OperationType.SUM:
+        summarize(request, graph, vector1, vector2, operation)
+        return graph
+    elif operation.name == OperationType.MUL:
+        multiply(request, graph, vector1, vector2, operation)
+        return graph
+    elif operation.name == OperationType.LEN:
+        length(request, graph, vector1, vector2, operation)
+        return graph
+
+
+
+

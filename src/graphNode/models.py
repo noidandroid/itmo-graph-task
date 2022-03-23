@@ -3,8 +3,8 @@ from collections import defaultdict
 import numpy as np
 from django.db import models
 
-
 # Create your models here.
+from pip._internal.utils.misc import enum
 
 
 class Graph(models.Model):
@@ -69,10 +69,15 @@ class Vector(Node):
         self._value_list.append(num)
 
 
+class OperationType(enum):
+    SUM = 1
+    MUL = 2
+    LEN = 3
+
+
 class Operation(Node):
     """Operation node model"""
 
     def __init__(self, name, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.name = models.CharField("Operation name", max_length=250)
-
+        self.name = OperationType
